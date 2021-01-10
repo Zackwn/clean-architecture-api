@@ -1,0 +1,24 @@
+import { User } from '../user/user'
+import { UserBuilder } from '../user/user-builder'
+
+describe('User domain entity', () => {
+  it('should not create user with invalid name', () => {
+    const userData = UserBuilder
+      .aUser()
+      .withInvalidName()
+      .build()
+
+    const userOrError = User.create(userData)
+    expect(userOrError.isLeft()).toBe(true)
+  })
+
+  it('should not create user with invalid email', () => {
+    const userData = UserBuilder
+      .aUser()
+      .withInvalidEmail()
+      .build()
+
+    const userOrError = User.create(userData)
+    expect(userOrError.isLeft()).toBe(true)
+  })
+})
