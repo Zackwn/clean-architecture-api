@@ -20,9 +20,13 @@ export class RegisterController implements Controller {
     if (!request.body.name) {
       return badRequest(new MissingParamError("name"))
     }
+    if (!request.body.password) {
+      return badRequest(new MissingParamError("password"))
+    }
     const userData: UserData = {
       email: request.body.email,
-      name: request.body.name
+      name: request.body.name,
+      password: request.body.password
     }
     const registerUserResponse: RegisterUserResponse = await this.registerUser.exec(userData)
     if (registerUserResponse.isLeft()) {
