@@ -2,6 +2,7 @@ import { UserData } from "../../../entities/user/user-data";
 import { Either, left, right } from "../../../shared/either";
 import { UserRepository } from "../../../usecases/ports/user-repository";
 import { UserAlredyExistsError } from "../../errors/user-alredy-exists";
+import { UserDoNotExistsError } from "../../errors/user-do-not-exists";
 
 export class InMemoryUserRepository implements UserRepository {
   private users: UserData[] = []
@@ -10,16 +11,23 @@ export class InMemoryUserRepository implements UserRepository {
     this.users = users
   }
 
-  public async findByEmail(email: string): Promise<UserData | undefined> {
-    return this.users.find(user => user.email === email)
+  public async findByEmail(email: string): Promise<Either<UserDoNotExistsError, UserData>> {
+    const userOrUndefined: UserData | undefined = this.users.find(user => user.email === email)
+
+    if (userOrUndefined === undefined) {
+      return left(new UserDoNotExistsError(email))
+    }
+
+    return right(userOrUndefined)
   }
 
   public async exists(email: string): Promise<boolean> {
-    const user = await this.findByEmail(email)
-    if (user) {
-      return true
+    const userOrError = await this.findByEmail(email)
+    // error -> UserDoesNotExists
+    if (userOrError.isLeft()) {
+      return false
     }
-    return false
+    return true
   }
 
   public async save(userData: UserData): Promise<Either<UserAlredyExistsError, UserData>> {

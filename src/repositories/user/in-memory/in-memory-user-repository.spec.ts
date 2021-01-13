@@ -7,15 +7,15 @@ describe('In memory user repository', () => {
 
     const userRepository = new InMemoryUserRepository([user])
 
-    expect((await userRepository.findByEmail(user.email))).toBe(user)
+    expect((await userRepository.findByEmail(user.email)).value).toBe(user)
   })
 
-  it('should return undefined if user is not found', async () => {
+  it('should return error if user is not found', async () => {
     const user = UserBuilder.aUser().build()
 
     const userRepository = new InMemoryUserRepository([user])
 
-    expect((await userRepository.findByEmail('no@mail.com'))).toBe(undefined)
+    expect((await userRepository.findByEmail('no@mail.com')).isLeft()).toBe(true)
   })
 
   it('should save user', async () => {
@@ -25,7 +25,7 @@ describe('In memory user repository', () => {
 
     await userRepository.save(user)
 
-    expect((await userRepository.findByEmail(user.email))).toBe(user)
+    expect((await userRepository.findByEmail(user.email)).value).toBe(user)
   })
 
   it(`shouldn't save user that alredy exists`, async () => {

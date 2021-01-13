@@ -13,6 +13,6 @@ describe('Register User Use Case', () => {
 
     const registeredUser = await registerUser.exec(userData)
 
-    expect((await userRepo.findByEmail(userData.email))).toBe(registeredUser.value)
+    expect((await userRepo.findByEmail(userData.email)).value).toBe(registeredUser.value)
   })
 })

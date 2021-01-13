@@ -1,4 +1,5 @@
 import { UserData } from "../../entities/user/user-data";
+import { ILoginUser } from "../../usecases/login-user/login-user-interface";
 import { IRegisterUser } from "../../usecases/register-user/register-user-interface";
 import { RegisterUserResponse } from "../../usecases/register-user/register-user-response";
 import { Controller } from "./controller";
@@ -8,9 +9,11 @@ import { HttpRequest, HttpResponse } from "./ports/http";
 
 export class RegisterController implements Controller {
   private readonly registerUser: IRegisterUser
+  private readonly loginUser: ILoginUser
 
-  public constructor(registerUser: IRegisterUser) {
+  public constructor(registerUser: IRegisterUser, loginUser: ILoginUser) {
     this.registerUser = registerUser
+    this.loginUser = loginUser
   }
 
   public async handle(request: HttpRequest): Promise<HttpResponse> {
@@ -23,15 +26,32 @@ export class RegisterController implements Controller {
     if (!request.body.password) {
       return badRequest(new MissingParamError("password"))
     }
+
     const userData: UserData = {
       email: request.body.email,
       name: request.body.name,
       password: request.body.password
     }
+
     const registerUserResponse: RegisterUserResponse = await this.registerUser.exec(userData)
     if (registerUserResponse.isLeft()) {
       return badRequest(registerUserResponse.value)
     }
-    return ok(registerUserResponse.value)
+
+    const registeredUserData: UserData = registerUserResponse.value
+
+    const unhashedPassword = userData.password
+    const loginUserResponseOrError = await this.loginUser.exec(registeredUserData.email, unhashedPassword)
+
+    if (loginUserResponseOrError.isLeft()) {
+      return badRequest(loginUserResponseOrError.value)
+    }
+
+    const token = loginUserResponseOrError.value.token
+
+    return ok({
+      token,
+      user: loginUserResponseOrError.value.userData
+    })
   }
 }
