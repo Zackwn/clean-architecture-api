@@ -4,6 +4,7 @@ import { HttpResponse } from "../ports/http"
 const BAD_REQUEST_STATUS_CODE = 400
 const OK_STATUS_CODE = 200
 const SERVER_ERROR_STATUS_CODE = 500
+const UNAUTHORIZED_STATUS_CODE = 401
 
 export const badRequest = (error: Error): HttpResponse => {
   return {
@@ -23,5 +24,11 @@ export const serverError = (reason: string): HttpResponse => {
   return {
     statusCode: SERVER_ERROR_STATUS_CODE,
     body: new ServerError(reason)
+  }
+}
+
+export const unauthrozied = (): HttpResponse => {
+  return {
+    statusCode: UNAUTHORIZED_STATUS_CODE
   }
 }
