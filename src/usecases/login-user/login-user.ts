@@ -1,4 +1,5 @@
 import { Password } from "../../entities/user/password";
+import { User } from "../../entities/user/user";
 import { UserData } from "../../entities/user/user-data";
 import { left, right } from "../../shared/either";
 import { UserAuth, UserAuthPayload } from "../ports/user-auth";
@@ -25,7 +26,7 @@ export class LoginUser implements ILoginUser {
     const userData: UserData = userOrError.value
 
     const hashPassword = userData.password
-    const correctPasswordOrError = await Password.verify(password, hashPassword)
+    const correctPasswordOrError = await User.verify(password, hashPassword)
 
     if (correctPasswordOrError.isLeft()) {
       return left(correctPasswordOrError.value)

@@ -1,5 +1,6 @@
 import { User } from '../user/user'
 import { UserBuilder } from '../user/user-builder'
+import { Password } from './password'
 
 describe('User domain entity', () => {
   it('should not create user with invalid name', async () => {
@@ -33,7 +34,7 @@ describe('User domain entity', () => {
     expect(userOrError.isLeft()).toBe(true)
   })
 
-  it('should encrypt password', async () => {
+  it('should hash password', async () => {
     const userData = UserBuilder
       .aUser()
       .build()
@@ -46,5 +47,39 @@ describe('User domain entity', () => {
     }
 
     expect(userData.password.length).toBeLessThan(userPassword.length)
+  })
+
+  it('should verify right password', async () => {
+    const userData = UserBuilder
+      .aUser()
+      .build()
+
+    const userOrError = await User.create(userData)
+
+    let hashedPassword = ''
+    if (userOrError.isRight()) {
+      hashedPassword = userOrError.value.password.value
+    }
+
+    const rightPasswordOrError = await User.verify(userData.password, hashedPassword)
+
+    expect(rightPasswordOrError.value).toBe(userData.password)
+  })
+
+  it('should not verify wrong password', async () => {
+    const userData = UserBuilder
+      .aUser()
+      .build()
+
+    const userOrError = await User.create(userData)
+
+    let hashedPassword = ''
+    if (userOrError.isRight()) {
+      hashedPassword = userOrError.value.password.value
+    }
+
+    const rightPasswordOrError = await User.verify('wrongpassword', hashedPassword)
+
+    expect(rightPasswordOrError.isLeft()).toBe(true)
   })
 })
