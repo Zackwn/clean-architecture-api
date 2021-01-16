@@ -1,4 +1,5 @@
 import { JWTUserAuthAdapter } from '../../adapters/auth/jwt-user-auth-adapter'
+import { UserPasswordHasherBcryptAdapter } from '../../adapters/password-hasher/bcrypt-adapter/user-password-hasher-bcrypt-adapter'
 import { User } from '../../entities/user/user'
 import { UserBuilder } from '../../entities/user/user-builder'
 import { UserData } from '../../entities/user/user-data'
@@ -9,7 +10,8 @@ describe('Login User Use Case', () => {
   it('should login a user', async () => {
     const userRepo = new InMemoryUserRepository()
     const jwtAuthUser = new JWTUserAuthAdapter()
-    const loginUser = new LoginUser(userRepo, jwtAuthUser)
+    const userPasswordHasher = new UserPasswordHasherBcryptAdapter()
+    const loginUser = new LoginUser(userRepo, jwtAuthUser, userPasswordHasher)
 
     const userData: UserData = UserBuilder.aUser().build()
 
@@ -20,10 +22,10 @@ describe('Login User Use Case', () => {
     await userRepo.save({
       name: user.name.value,
       email: user.email.value,
-      password: user.password.value
+      password: await userPasswordHasher.hash(user.password.value)
     })
 
-    const loginUserResponseOrError = await loginUser.exec(userData.email, userData.password)
+    const loginUserResponseOrError = await loginUser.exec(userData.email, user.password.value)
 
     expect(loginUserResponseOrError.isRight()).toBe(true)
   })
@@ -31,7 +33,8 @@ describe('Login User Use Case', () => {
   it('should not login user with wrong password', async () => {
     const userRepo = new InMemoryUserRepository()
     const jwtAuthUser = new JWTUserAuthAdapter()
-    const loginUser = new LoginUser(userRepo, jwtAuthUser)
+    const userPasswordHasher = new UserPasswordHasherBcryptAdapter()
+    const loginUser = new LoginUser(userRepo, jwtAuthUser, userPasswordHasher)
 
     const userData: UserData = UserBuilder.aUser().build()
 

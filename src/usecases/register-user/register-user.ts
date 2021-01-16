@@ -1,15 +1,18 @@
 import { User } from "../../entities/user/user";
 import { UserData } from "../../entities/user/user-data";
 import { left, right } from "../../shared/either";
+import { UserPasswordHasher } from "../ports/user-password-hasher";
 import { UserRepository } from "../ports/user-repository";
 import { IRegisterUser } from "./register-user-interface";
 import { RegisterUserResponse } from "./register-user-response";
 
 export class RegisterUser implements IRegisterUser {
   private readonly userRepository: UserRepository
+  private readonly userPasswordHasher: UserPasswordHasher
 
-  public constructor(userRepository: UserRepository) {
+  public constructor(userRepository: UserRepository, userPasswordHasher: UserPasswordHasher) {
     this.userRepository = userRepository
+    this.userPasswordHasher = userPasswordHasher
   }
 
   public async exec(userData: UserData): Promise<RegisterUserResponse> {
@@ -20,12 +23,13 @@ export class RegisterUser implements IRegisterUser {
     }
 
     const user: User = userOrError.value
+    const userPasswordHashed = await this.userPasswordHasher.hash(user.password.value)
 
     // use user class object as props
     const savedUserDataOrError = await this.userRepository.save({
       email: user.email.value,
       name: user.name.value,
-      password: user.password.value
+      password: userPasswordHashed
     })
 
     if (savedUserDataOrError.isLeft()) {

@@ -3,7 +3,7 @@ import { Either, left, right } from "../../shared/either"
 import { Email } from "./email"
 import { InvalidEmailError } from "./errors/invalid-email"
 import { InvalidNameError } from "./errors/invalid-name"
-import { WrongPasswordError } from "./errors/wrong-password"
+import { WrongPasswordError } from "../../adapters/password-hasher/errors/wrong-password"
 import { Name } from "./name"
 import { Password } from "./password"
 import { UserData } from "./user-data"
@@ -40,18 +40,5 @@ export class User {
     const password: Password = passwordOrError.value
 
     return right(new User(name, email, password))
-  }
-
-  static async hash(password: string, salt?: number): Promise<string> {
-    const encryptedPassword = await hash(password, salt || 8)
-    return encryptedPassword
-  }
-
-  static async verify(password: string, hash: string): Promise<Either<WrongPasswordError, string>> {
-    const isPasswordCorrect = await compare(password, hash)
-    if (isPasswordCorrect) {
-      return right(password)
-    }
-    return left(new WrongPasswordError(password))
   }
 }

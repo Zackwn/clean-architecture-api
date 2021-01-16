@@ -26,7 +26,6 @@ export class Password {
     if (!Password.validate(password)) {
       return left(new InvalidPasswordError(password))
     }
-    const hashedPassword = await User.hash(password)
-    return right(new Password(hashedPassword))
+    return right(new Password(password))
   }
 }
