@@ -29,7 +29,8 @@ export class RegisterUser implements IRegisterUser {
     const savedUserDataOrError = await this.userRepository.save({
       email: user.email.value,
       name: user.name.value,
-      password: userPasswordHashed
+      password: userPasswordHashed,
+      id: user.id.value
     })
 
     if (savedUserDataOrError.isLeft()) {

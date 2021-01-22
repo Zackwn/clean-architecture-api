@@ -33,4 +33,16 @@ describe('User domain entity', () => {
 
     expect(userOrError.isLeft()).toBe(true)
   })
+
+  it('should generate id', async () => {
+    const userData = UserBuilder
+      .aUser()
+      .build()
+
+    const userOrError = await User.create(userData)
+
+    const user: User = userOrError.value as User
+
+    expect(user.id.value.length).toBeGreaterThan(0)
+  })
 })

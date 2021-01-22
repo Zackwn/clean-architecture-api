@@ -1,5 +1,6 @@
 import { UserData } from "../../entities/user/user-data";
 import { ILoginUser } from "../../usecases/login-user/login-user-interface";
+import { RegisterUserDTO } from "../../usecases/register-user/register-user-dto";
 import { IRegisterUser } from "../../usecases/register-user/register-user-interface";
 import { RegisterUserResponse } from "../../usecases/register-user/register-user-response";
 import { Controller } from "./controller";
@@ -27,7 +28,7 @@ export class RegisterController implements Controller {
       return badRequest(new MissingParamError("password"))
     }
 
-    const userData: UserData = {
+    const userData: RegisterUserDTO = {
       email: request.body.email,
       name: request.body.name,
       password: request.body.password

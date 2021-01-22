@@ -22,7 +22,8 @@ describe('Login User Use Case', () => {
     await userRepo.save({
       name: user.name.value,
       email: user.email.value,
-      password: await userPasswordHasher.hash(user.password.value)
+      password: await userPasswordHasher.hash(user.password.value),
+      id: user.id.value
     })
 
     const loginUserResponseOrError = await loginUser.exec(userData.email, user.password.value)
