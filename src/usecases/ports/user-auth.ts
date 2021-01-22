@@ -3,6 +3,7 @@ import { Either } from "../../shared/either";
 
 export interface UserAuthPayload {
   email: string
+  id: string
 }
 
 export interface UserAuth {

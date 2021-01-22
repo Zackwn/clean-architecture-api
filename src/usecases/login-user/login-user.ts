@@ -36,7 +36,8 @@ export class LoginUser implements ILoginUser {
     }
 
     const userAuthPayload: UserAuthPayload = {
-      email: userData.email
+      email: userData.email,
+      id: userData.id
     }
 
     const token = await this.userAuth.sign(userAuthPayload)
