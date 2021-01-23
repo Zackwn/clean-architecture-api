@@ -1,12 +1,12 @@
 import { JWTUserAuthAdapter } from './jwt-user-auth-adapter'
-import jwt, { JsonWebTokenError } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 import { UserAuthPayload } from '../../usecases/ports/user-auth'
 
 describe('JWT User Auth Adapter', () => {
   it('should sign payload', async () => {
     const jwtUserAuth = new JWTUserAuthAdapter()
 
-    const payload: UserAuthPayload = { email: 'any@mail.com' }
+    const payload: UserAuthPayload = { email: 'any@mail.com', id: '679c9561-d768-4140-9f32-585e9cf4ce85' }
 
     const token = await jwtUserAuth.sign(payload)
 
@@ -16,7 +16,7 @@ describe('JWT User Auth Adapter', () => {
   it('should sign and verify payload', async () => {
     const jwtUserAuth = new JWTUserAuthAdapter()
 
-    const payload: UserAuthPayload = { email: 'any@mail.com' }
+    const payload: UserAuthPayload = { email: 'any@mail.com', id: '679c9561-d768-4140-9f32-585e9cf4ce85' }
 
     const token = await jwtUserAuth.sign(payload)
 
@@ -30,7 +30,7 @@ describe('JWT User Auth Adapter', () => {
   it('should fail to decoda not own generated token', async () => {
     const jwtUserAuth = new JWTUserAuthAdapter()
 
-    const payload: UserAuthPayload = { email: 'any@mail.com' }
+    const payload: UserAuthPayload = { email: 'any@mail.com', id: '679c9561-d768-4140-9f32-585e9cf4ce85' }
 
     const token = jwt.sign(payload, 'false_secret')
 

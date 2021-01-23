@@ -8,7 +8,9 @@ config()
 
 export class JWTUserAuthAdapter implements UserAuth {
   public async sign(payload: UserAuthPayload): Promise<string> {
-    return sign(payload, process.env.JWT_SECRET)
+    return sign(payload, process.env.JWT_SECRET, {
+      expiresIn: '30m'
+    })
   }
 
   public async decode(token: string): Promise<Either<InvalidTokenError, UserAuthPayload>> {

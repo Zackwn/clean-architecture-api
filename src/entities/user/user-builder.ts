@@ -4,7 +4,8 @@ export class UserBuilder {
   private user: UserData = {
     email: 'any@mail.com',
     name: 'anyname',
-    password: 'dnw7adgaw78dga'
+    password: 'dnw7adgaw78dga',
+    id: 'd7304faf-f5e5-455f-be12-dfc5d2e8a311'
   }
 
   private constructor() { }

@@ -1,8 +1,8 @@
 import { RepositoryError } from "./repository-error";
 
 export class UserDoNotExistsError extends Error implements RepositoryError {
-  public constructor(email: string) {
-    super(`User with email "${email}" doesn't exists.`)
+  public constructor(identifier: string) {
+    super(`User with identifier "${identifier}" doesn't exists.`)
     this.name = 'UserDoNotExistsError'
   }
 }
