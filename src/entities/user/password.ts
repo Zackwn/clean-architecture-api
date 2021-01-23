@@ -22,7 +22,7 @@ export class Password {
     return true
   }
 
-  static async create(password: string): Promise<Either<InvalidPasswordError, Password>> {
+  static create(password: string): Either<InvalidPasswordError, Password> {
     if (!Password.validate(password)) {
       return left(new InvalidPasswordError(password))
     }

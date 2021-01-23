@@ -23,10 +23,10 @@ export class User {
     Object.freeze(this)
   }
 
-  static async create(userData: Omit<UserData, 'id'>): Promise<Either<InvalidNameError | InvalidEmailError, User>> {
+  static create(userData: Omit<UserData, 'id'>): Either<InvalidNameError | InvalidEmailError, User> {
     const nameOrError = Name.create(userData.name)
     const emailOrError = Email.create(userData.email)
-    const passwordOrError = await Password.create(userData.password)
+    const passwordOrError = Password.create(userData.password)
 
     if (nameOrError.isLeft()) {
       return left(nameOrError.value)
