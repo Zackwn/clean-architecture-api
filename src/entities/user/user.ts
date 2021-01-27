@@ -1,13 +1,11 @@
-import { compare, hash } from "bcrypt"
 import { Either, left, right } from "../../shared/either"
 import { Email } from "./email"
 import { InvalidEmailError } from "./errors/invalid-email"
 import { InvalidNameError } from "./errors/invalid-name"
-import { WrongPasswordError } from "../../adapters/password-hasher/errors/wrong-password"
+import { ID } from "./id"
 import { Name } from "./name"
 import { Password } from "./password"
 import { UserData } from "./user-data"
-import { ID } from "./id"
 
 export class User {
   public readonly name: Name
