@@ -11,7 +11,7 @@ const unauthorizedError = (res: Response) => {
   res.status(statusCode).send()
 }
 
-export const withAuthAdaptRoute = (withAuthController: WithAuthController) => {
+export const ensureAuthAdaptRoute = (withAuthController: WithAuthController) => {
   return async (req: Request, res: Response) => {
     const httpRequest: HttpRequest = {
       body: req.body,
