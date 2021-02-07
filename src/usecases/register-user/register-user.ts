@@ -16,7 +16,7 @@ export class RegisterUser implements IRegisterUser {
   }
 
   public async exec(userData: UserData): Promise<RegisterUserResponse> {
-    const userOrError = await User.create(userData)
+    const userOrError = User.create(userData)
 
     if (userOrError.isLeft()) {
       return left(userOrError.value)
@@ -30,7 +30,8 @@ export class RegisterUser implements IRegisterUser {
       email: user.email.value,
       name: user.name.value,
       password: userPasswordHashed,
-      id: user.id.value
+      id: user.id.value,
+      role_id: user.role_id.value
     })
 
     if (savedUserDataOrError.isLeft()) {

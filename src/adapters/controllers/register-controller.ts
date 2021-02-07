@@ -31,7 +31,8 @@ export class RegisterController implements Controller {
     const userData: RegisterUserDTO = {
       email: request.body.email,
       name: request.body.name,
-      password: request.body.password
+      password: request.body.password,
+      role_id: 'user'
     }
 
     const registerUserResponse: RegisterUserResponse = await this.registerUser.exec(userData)
