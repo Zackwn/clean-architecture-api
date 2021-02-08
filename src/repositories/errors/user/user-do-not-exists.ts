@@ -1,4 +1,4 @@
-import { RepositoryError } from "./repository-error";
+import { RepositoryError } from "../../errors/repository-error"
 
 export class UserDoNotExistsError extends Error implements RepositoryError {
   public constructor(identifier: string) {
