@@ -38,7 +38,7 @@ export class MongoDBUserRepository implements UserRepository {
     const userCollection = MongoHelper.getCollection('user')
     const result = await userCollection.findOneAndUpdate({ id }, {
       $set: updatedUserData
-    })
+    }, { returnOriginal: false })
     return right(result.value as UserData)
   }
 
