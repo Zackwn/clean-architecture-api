@@ -11,4 +11,9 @@ export class InMemoryPermissionRepository implements PermissionRepository {
   public async getAllPermissions(): Promise<PermissionData[]> {
     return this.permissions
   }
+
+  public async add(permissionData: PermissionData): Promise<PermissionData> {
+    this.permissions.push(permissionData)
+    return permissionData
+  }
 }
