@@ -1,5 +1,5 @@
 import { UserBuilder } from "../../entities/user/user-builder"
-import { InMemoryUserRepository } from "../../repositories/user/in-memory/in-memory-user-repository"
+import { InMemoryUserRepository } from "../../repositories/in-memory/user/in-memory-user-repository"
 
 import { UpdateUserName } from './update-user-name'
 

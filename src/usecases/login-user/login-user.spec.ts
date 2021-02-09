@@ -3,7 +3,7 @@ import { UserPasswordHasherBcryptAdapter } from '../../adapters/password-hasher/
 import { User } from '../../entities/user/user'
 import { UserBuilder } from '../../entities/user/user-builder'
 import { UserData } from '../../entities/user/user-data'
-import { InMemoryUserRepository } from '../../repositories/user/in-memory/in-memory-user-repository'
+import { InMemoryUserRepository } from '../../repositories/in-memory/user/in-memory-user-repository'
 import { LoginUser } from './login-user'
 
 describe('Login User Use Case', () => {
@@ -15,7 +15,7 @@ describe('Login User Use Case', () => {
 
     const userData: UserData = UserBuilder.aUser().build()
 
-    const userOrError = await User.create(userData)
+    const userOrError = User.create(userData)
 
     const user: User = userOrError.value as User
 
@@ -23,7 +23,8 @@ describe('Login User Use Case', () => {
       name: user.name.value,
       email: user.email.value,
       password: await userPasswordHasher.hash(user.password.value),
-      id: user.id.value
+      id: user.id.value,
+      role_id: user.role_id.value
     })
 
     const loginUserResponseOrError = await loginUser.exec(userData.email, user.password.value)

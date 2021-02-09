@@ -1,6 +1,6 @@
-import { InMemoryPostRepository } from "../../repositories/post/in-memory/in-memory-post-respository"
+import { InMemoryPostRepository } from "../../repositories/in-memory/post/in-memory-post-respository"
 import { UserBuilder } from '../../entities/user/user-builder'
-import { InMemoryUserRepository } from '../../repositories/user/in-memory/in-memory-user-repository'
+import { InMemoryUserRepository } from '../../repositories/in-memory/user/in-memory-user-repository'
 import { CreatePost } from './create-post'
 
 describe('Create Post Use Case', () => {

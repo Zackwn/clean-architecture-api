@@ -1,4 +1,4 @@
-import { InMemoryUserRepository } from '../../repositories/user/in-memory/in-memory-user-repository'
+import { InMemoryUserRepository } from '../../repositories/in-memory/user/in-memory-user-repository'
 import { RegisterUser } from './register-user'
 import { UserBuilder } from '../../entities/user/user-builder'
 import { UserPasswordHasherBcryptAdapter } from '../../adapters/password-hasher/bcrypt-adapter/user-password-hasher-bcrypt-adapter'
