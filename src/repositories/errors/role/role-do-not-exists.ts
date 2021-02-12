@@ -1,4 +1,4 @@
-import { RepositoryError } from "../../errors/repository-error";
+import { RepositoryError } from "../../errors/repository-error"
 
 export class RoleDoNotExistsError extends Error implements RepositoryError {
   public constructor(roleName: string) {
