@@ -31,7 +31,8 @@ export class RegisterUser implements IRegisterUser {
       name: user.name.value,
       password: userPasswordHashed,
       id: user.id.value,
-      role_id: user.role_id.value
+      role_id: user.role_id?.value,
+      is_admin: false
     })
 
     if (savedUserDataOrError.isLeft()) {
