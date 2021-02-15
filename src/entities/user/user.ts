@@ -13,9 +13,9 @@ export class User {
   public readonly email: Email
   public readonly password: Password
   public readonly id: ID
-  public readonly role_id: RoleID
+  public readonly role_id: RoleID | null
 
-  private constructor(name: Name, email: Email, password: Password, id: ID, roleID: RoleID) {
+  private constructor(name: Name, email: Email, password: Password, id: ID, roleID: RoleID | null) {
     this.name = name
     this.email = email
     this.password = password
@@ -28,7 +28,7 @@ export class User {
     const nameOrError = Name.create(userData.name)
     const emailOrError = Email.create(userData.email)
     const passwordOrError = Password.create(userData.password)
-    const roleID = RoleID.create(userData.role_id)
+    const roleID: RoleID | null = userData.role_id ? RoleID.create(userData.role_id) : null
 
     if (nameOrError.isLeft()) {
       return left(nameOrError.value)
