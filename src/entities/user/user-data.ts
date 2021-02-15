@@ -3,5 +3,6 @@ export interface UserData {
   name: string
   password: string,
   id: string,
-  role_id?: string
+  role_id?: string,
+  is_admin: boolean
 }
