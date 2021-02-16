@@ -34,7 +34,7 @@ describe('MongoDB Role Repository', () => {
     expect(result.isLeft()).toBe(true)
   })
 
-  it('should return error when try find non existing role', async () => {
+  it('should return error when try finding non existing role', async () => {
     const roleRepository = new MongoDBRoleRepository()
 
     const role = RoleBuilder.aRole().build()
