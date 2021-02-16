@@ -1,22 +1,36 @@
 import { PermissionData } from "../../../../entities/permission/permission-data";
+import { Either, left, right } from "../../../../shared/either";
 import { PermissionRepository } from "../../../../usecases/ports/permission-repository";
+import { PermissionDoNotExistsError } from "../../../errors/permission/permission-do-not-exists";
 import { MongoHelper } from "../helpers/mongo-helper";
 
 export class MongoDBPermissionRepository implements PermissionRepository {
   public constructor() { }
 
   public async add(permissionData: PermissionData) {
-    const permissionRepository = MongoHelper.getCollection('permission')
+    const permissionCollection = MongoHelper.getCollection('permission')
 
-    await permissionRepository.insertOne(permissionData)
+    await permissionCollection.insertOne(permissionData)
 
     return permissionData
   }
 
-  public async getAllPermissions(): Promise<PermissionData[]> {
-    const permissionRepository = MongoHelper.getCollection('permission')
+  public async findById(permissionID: string): Promise<Either<PermissionDoNotExistsError, PermissionData>> {
+    const permissionCollection = MongoHelper.getCollection('permission')
 
-    const mongoCursor = permissionRepository.find()
+    const permission = await permissionCollection.findOne({ id: permissionID })
+
+    if (!permission) {
+      return left(new PermissionDoNotExistsError(permissionID))
+    }
+
+    return right(permission as PermissionData)
+  }
+
+  public async getAllPermissions(): Promise<PermissionData[]> {
+    const permissionCollection = MongoHelper.getCollection('permission')
+
+    const mongoCursor = permissionCollection.find()
 
     const permissions: PermissionData[] = []
 

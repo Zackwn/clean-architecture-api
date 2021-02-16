@@ -10,6 +10,24 @@ describe('MongoDB Permission Repository', () => {
     await MongoHelper.clearCollection('role')
   })
 
+  it('should find permission by id', async () => {
+    const permission = PermissionBuilder.aPermission().build()
+
+    const permissionRepository = new MongoDBPermissionRepository()
+
+    await permissionRepository.add(permission)
+
+    expect((await permissionRepository.findById(permission.id)).value).toEqual(permission)
+  })
+
+  it('should return error when try finding non existing permission', async () => {
+    const permission = PermissionBuilder.aPermission().build()
+
+    const permissionRepository = new MongoDBPermissionRepository()
+
+    expect((await permissionRepository.findById(permission.id)).isLeft()).toBe(true)
+  })
+
   it('should add permission and get all', async () => {
     const permission = PermissionBuilder.aPermission().build()
 
