@@ -5,7 +5,7 @@ import { RoleData } from '../../../../entities/role/role-data'
 
 describe('MongoDB Role Repository', () => {
   beforeEach(async () => {
-    MongoHelper.clearCollection('role')
+    await MongoHelper.clearCollection('role')
   })
 
   it('should add and find role by name', async () => {
