@@ -42,14 +42,21 @@ describe('MongoDB Permission Repository', () => {
     const permissionRepository = new MongoDBPermissionRepository()
     const roleRepository = new MongoDBRoleRepository()
 
-    const permission = PermissionBuilder.aPermission().build()
-    await permissionRepository.add(permission)
-
     const role = RoleBuilder.aRole().build()
-    await roleRepository.add(role, [permission.id])
+    await roleRepository.add(role)
+
+    const permissionBase = PermissionBuilder.aPermission().build()
+    for (let permissionID of role.permissionsIDs) {
+      await permissionRepository.add({
+        ...permissionBase,
+        id: permissionID
+      })
+    }
 
     const result = await permissionRepository.getRolePermissions(role.id)
 
-    expect(result[0]).toEqual(permission)
+    expect(result.length).toBe(2)
+    expect(result[0]?.id).toBe(role.permissionsIDs[0])
+    expect(result[1]?.id).toBe(role.permissionsIDs[1])
   })
 })

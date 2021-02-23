@@ -47,12 +47,13 @@ export class MongoDBPermissionRepository implements PermissionRepository {
 
     const role = await roleCollection.findOne({ id: roleID })
 
-    const permissions: Promise<PermissionData>[] = []
+    const permissionsPromises: Promise<PermissionData>[] = []
 
     role.permissionsIDs.forEach((permissionID: string) => {
-      permissions.push(permissionCollection.findOne({ id: permissionID }))
+      permissionsPromises.push(permissionCollection.findOne({ id: permissionID }))
     })
 
-    return await Promise.all(permissions)
+    const permissions = await Promise.all(permissionsPromises)
+    return permissions
   }
 }
