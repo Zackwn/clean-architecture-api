@@ -20,7 +20,7 @@ export class MongoDBRoleRepository implements RoleRepository {
     return right(role)
   }
 
-  public async add(roleData: RoleData, permissionsIDs: string[]): Promise<Either<RoleAlreadyExists, RoleData>> {
+  public async add(roleData: RoleData): Promise<Either<RoleAlreadyExists, RoleData>> {
     const roleRepository = MongoHelper.getCollection('role')
 
     const roleExists = (await this.findByName(roleData.name)).isRight()
@@ -29,10 +29,7 @@ export class MongoDBRoleRepository implements RoleRepository {
       return left(new RoleAlreadyExists(roleData.name))
     }
 
-    await roleRepository.insertOne({
-      ...roleData,
-      permissionsIDs: permissionsIDs
-    })
+    await roleRepository.insertOne(roleData)
 
     return right(roleData)
   }

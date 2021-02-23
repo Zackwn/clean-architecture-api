@@ -13,7 +13,7 @@ describe('MongoDB Role Repository', () => {
 
     const role = RoleBuilder.aRole().build()
 
-    await roleRepository.add(role, ['b11db303-b7dc-4b92-9f1b-60f2675866a2'])
+    await roleRepository.add(role)
 
     const roleOrError = await roleRepository.findByName(role.name)
 
@@ -27,9 +27,9 @@ describe('MongoDB Role Repository', () => {
 
     const role = RoleBuilder.aRole().build()
 
-    await roleRepository.add(role, ['b11db303-b7dc-4b92-9f1b-60f2675866a2'])
+    await roleRepository.add(role)
 
-    const result = await roleRepository.add(role, ['b11db303-b7dc-4b92-9f1b-60f2675866a2'])
+    const result = await roleRepository.add(role)
 
     expect(result.isLeft()).toBe(true)
   })
