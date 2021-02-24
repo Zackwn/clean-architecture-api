@@ -1,5 +1,5 @@
-import { CreatePostController } from "../../adapters/controllers/create-post-controller"
-import { makeCreatePostUseCase } from "./create-post-use-case"
+import { CreatePostController } from "../../../adapters/controllers/create-post-controller"
+import { makeCreatePostUseCase } from "../usecases/create-post-use-case"
 
 export const makeCreatePostController = (): CreatePostController => {
   const createPostUseCase = makeCreatePostUseCase()

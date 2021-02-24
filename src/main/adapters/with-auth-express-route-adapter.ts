@@ -4,7 +4,7 @@ import { WithAuthParams } from '../../adapters/controllers/ports/auth'
 import { HttpRequest } from '../../adapters/controllers/ports/http'
 import { WithAuthController } from '../../adapters/controllers/with-auth-controller'
 import { UserAuthPayload } from '../../usecases/ports/user-auth'
-import { makeUserAuth } from '../factories/user-auth'
+import { makeUserAuth } from '../factories/auth/user-auth'
 
 const unauthorizedError = (res: Response) => {
   const { statusCode } = unauthrozied()
