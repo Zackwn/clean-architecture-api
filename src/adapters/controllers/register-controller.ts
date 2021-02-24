@@ -32,7 +32,7 @@ export class RegisterController implements Controller {
       email: request.body.email,
       name: request.body.name,
       password: request.body.password,
-      role_id: 'user'
+      is_admin: false
     }
 
     const registerUserResponse: RegisterUserResponse = await this.registerUser.exec(userData)
